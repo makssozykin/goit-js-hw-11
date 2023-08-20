@@ -11,11 +11,13 @@ async function fetchImages(query, page, perPage) {
     safesearch: true,
     page: page,
     per_page: perPage,
-    query: query,
+      query: query,
+    signal: controller.signal,
   });
-
-  const response = await axios.get(`${BASE_URL}?key=${API_KEY}&${params}`);
-  return response.data;
+    const response = await axios.get(`${BASE_URL}?key=${API_KEY}&${params}`);
+    return response.data;
+   
+  
 }
 
 export { fetchImages };

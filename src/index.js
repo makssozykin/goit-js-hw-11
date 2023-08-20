@@ -77,47 +77,50 @@ fetchImages(query, page, perPage)
     });
 }
 function onLoadMore() {
-  page += 1;
-    refs.loadMore.disabled = true;
-    fetchImages(query, page, perPage).then(response => {
-      refs.loader.classList.replace('loader','is-hidden');
-    refs.gallery.insertAdjacentHTML('beforeend', createMarkup(response.hits));
-    simpleLightBox = new SimpleLightbox('.gallery a', {
-        captions: true,
-        captionsData: 'alt',
-        captionPosition: 'bottom',
-        captionDelay: 250,
-        close: true,
-        closeText: '×',
-        nav: true,
-        navText: ['←', '→'],
-        overlay: true,
-        overlayOpacity: 0.5,
-        showCounter: true,
-        animationSlide: true,
-        widthRatio: 0.8,
-        heightRatio: 0.8,
-    }).refresh();
+        page += 1;
+        refs.loadMore.disabled = true;
+        fetchImages(query, page, perPage).then(response => {
+            refs.loader.classList.replace('loader', 'is-hidden');
+            refs.gallery.insertAdjacentHTML('beforeend', createMarkup(response.hits));
+            simpleLightBox = new SimpleLightbox('.gallery a', {
+                captions: true,
+                captionsData: 'alt',
+                captionPosition: 'bottom',
+                captionDelay: 250,
+                close: true,
+                closeText: '×',
+                nav: true,
+                navText: ['←', '→'],
+                overlay: true,
+                overlayOpacity: 0.5,
+                showCounter: true,
+                animationSlide: true,
+                widthRatio: 0.8,
+                heightRatio: 0.8,
+            }).refresh();
 
-      const totalPages = Math.ceil(response.totalHits / perPage);
+            const { height: cardHeight } = refs.gallery.firstElementChild.getBoundingClientRect();
+            window.scrollBy({
+                top: cardHeight * 2,
+                behavior: "smooth",
+            });
+        
+            const totalPages = Math.ceil(response.totalHits / perPage);
       
-    if (page < totalPages) {
-      refs.loadMore.disabled = false;
-    } else {
-      Notiflix.Notify.failure(
-        "We're sorry, but you've reached the end of search results."
-      );
-      refs.loadMore.classList.replace('load-more', 'load-more-hidden');
-    }
-    });
-    const { height: cardHeight } = refs.gallery
-        .firstElementChild.getBoundingClientRect();
-
-    window.scrollBy({
-        top: cardHeight * 2,
-        behavior: "smooth",
-    });
-}
+            if (page < totalPages) {
+                refs.loader.classList.replace('is-hidden', 'loader');
+                console.log(page);
+                refs.loadMore.disabled = false;
+            } else {
+                Notiflix.Notify.failure(
+                    "We're sorry, but you've reached the end of search results."
+                );
+                refs.loader.classList.replace('loader', 'is-hidden');
+                refs.loadMore.classList.replace('load-more', 'load-more-hidden');
+            }
+        });
+        }
+    
 
 function createMarkup(arr) {
   return arr
