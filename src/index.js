@@ -10,6 +10,8 @@ const refs = {
     gallery: document.querySelector('.gallery'),
     loadMore: document.querySelector('.load-more'),
     loader: document.querySelector('.loader'),
+    btnUp: document.getElementById('to-top-btn'),
+    btnUpWrapper: document.querySelector('.btn-up'),
 };
 
 let query = '';
@@ -29,7 +31,8 @@ function onSearch(e) {
     query = e.currentTarget.elements.searchQuery.value.trim();
     refs.gallery.innerHTML = '';
 
-     if (query === '') {
+    if (query === '') {
+         refs.loadMore.classList.replace('load-more', 'load-more-hidden');
          setTimeout(() => {
              Notiflix.Notify.failure(
       'The search string cannot be empty. Please specify your search query.'
@@ -104,17 +107,12 @@ function onLoadMore() {
                 heightRatio: 0.8,
             }).refresh();
 
-            const { height: cardHeight } = refs.gallery.firstElementChild.getBoundingClientRect();
-            window.scrollBy({
-                top: cardHeight * 2,
-                behavior: "smooth",
-            });
-        
+            scrollPage();
+
             const totalPages = Math.ceil(response.totalHits / perPage);
       
             if (page < totalPages) {
                 refs.loader.classList.replace('is-hidden', 'loader');
-                console.log(page);
                 refs.loadMore.disabled = false;
             } else {
                 Notiflix.Notify.failure(
@@ -140,18 +138,18 @@ function createMarkup(arr) {
         comments,
         downloads,
       }) => {
-        return `
+            return `
+        <a class="gallery__link" href="${largeImageURL}">
           <div class="gallery-item" id="${id}">
-          <a class="gallery__link" href="${largeImageURL}">
             <img class="gallery-item-img" src="${webformatURL}" alt="${tags}" loading="lazy" />
-            </a>
             <div class="info">
               <p class="info-item"><b>Likes</b> <span>${likes}</span></p>
               <p class="info-item"><b>Views</b> <span>${views}</span></p>
               <p class="info-item"><b>Comments</b> <span>${comments}</span></p>
               <p class="info-item"><b>Downloads</b> <span>${downloads}</span></p>
             </div>
-          </div>`;
+          </div>
+          </a>`;
       }
     )
     .join('');
@@ -176,3 +174,30 @@ function onFetchError(error) {
     );
     
 }
+
+//  smooth scrolling
+function scrollPage() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
+}
+
+// Button smooth scroll up
+
+window.addEventListener('scroll', scrollFunction);
+
+function scrollFunction() {
+  if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+    refs.btnUpWrapper.style.display = 'flex';
+  } else {
+    refs.btnUpWrapper.style.display = 'none';
+  }
+}
+refs.btnUp.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});

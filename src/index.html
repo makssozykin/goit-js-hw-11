@@ -4,22 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page title</title>
-    <link rel="stylesheet" href="./sass/index.scss" />
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <form class="search-form" id="search-form">
-      <input
-        type="text"
-        name="searchQuery"
-        autocomplete="off"
-        placeholder="Search images..."
-      />
-      <button type="submit">Search</button>
-    </form>
-    <p class="loader">Loading data, please wait...</p>
-    <div class="gallery">
-      <!-- Картки зображень -->
-    </div>
+    <header class="header">
+      <div class="container header-container">
+        <form class="search-form" id="search-form">
+          <input
+            type="text"
+            name="searchQuery"
+            autocomplete="off"
+            placeholder="Search images..."
+          />
+          <button type="submit">
+            <svg class="search" width="20" height="20" aria-label="search">
+              <use
+                class="icon-search"
+                href="./images/symbol-defs.svg#icon-search"
+              ></use>
+            </svg>
+            Search
+          </button>
+        </form>
+      </div>
+    </header>
+    <section class="photo-gallery container">
+      <!-- smoth scroll -->
+      <div class="btn-up">
+        <p class="btn-up-text">UP</p>
+        <button class="btn-up-wrapper__btn" id="to-top-btn" title="Go to top">
+          <svg class="icon-arrow" width="20" height="20" aria-label="up">
+            <use class="arrow" href="./images/symbol-defs.svg#icon-arrow"></use>
+          </svg>
+        </button>
+      </div>
+      <p class="loader">Loading data, please wait...</p>
+      <div class="gallery">
+        <!-- Картки зображень -->
+      </div>
+    </section>
     <div class="button-container">
       <button type="button" class="load-more">Load more</button>
     </div>
