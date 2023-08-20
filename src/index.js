@@ -30,9 +30,12 @@ function onSearch(e) {
     refs.gallery.innerHTML = '';
 
      if (query === '') {
-    Notiflix.Notify.failure(
+         setTimeout(() => {
+             Notiflix.Notify.failure(
       'The search string cannot be empty. Please specify your search query.'
          );
+             refs.loader.classList.replace('loader', 'is-hidden');
+         }, 1000);
     return;
 }
 fetchImages(query, page, perPage)
@@ -47,7 +50,7 @@ fetchImages(query, page, perPage)
           'beforeend',
           createMarkup(response.hits)
           );
-          refs.loader.classList.replace('loader','is-hidden');
+          refs.loader.classList.replace('loader', 'is-hidden');
         simpleLightBox = new SimpleLightbox('.gallery a', {
         captions: true,
         captionsData: 'alt',
@@ -73,7 +76,9 @@ fetchImages(query, page, perPage)
     })
     .catch(onFetchError)
     .finally(() => {
-      refs.form.reset();
+        
+        refs.form.reset();
+        
     });
 }
 function onLoadMore() {
