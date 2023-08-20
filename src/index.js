@@ -66,8 +66,11 @@ function onSearch(e) {
          }, 1000);
         return;
     }
-    fetchGallery().then((data) => Notiflix.Notify.success(
-        `Hooray! We found ${data} images.`));
+    fetchGallery().then((data) => {
+        if (data) {
+            Notiflix.Notify.success(`Hooray! We found ${data} images.`)
+        }
+    });
 }
 function onLoadMore() {
     pixabay.incrementPage();
@@ -83,7 +86,7 @@ async function fetchGallery() {
 
     try {
         if (totalHits === 0) {
-            Notify.failure(
+            Notiflix.Notify.failure(
                 `Sorry, there are no images matching your search query. Please try again.`
             );
             refs.loadMore.classList.replace('load-more', 'load-more-hidden');
